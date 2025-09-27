@@ -1,0 +1,101 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Supplier {
+  id          Int      @id @default(autoincrement())
+  name        String   @unique
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  // Relations
+  articles    Article[]
+
+  @@map("suppliers")
+}
+
+model Article {
+  id              Int      @id @default(autoincrement())
+  inputCode       String   // Original code from your catalog
+  inputDesignation String? // Original designation from your catalog
+  articleId       String   // TecDoc article ID
+  articleNo       String   // TecDoc article number
+  productName     String   // TecDoc product name
+  hasMultiple     Boolean  @default(false)
+  exists          Boolean? // Whether article exists in TecDoc (null = not set by user)
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  // Relations
+  supplierId      Int
+  supplier        Supplier @relation(fields: [supplierId], references: [id])
+  oemNumbers      OemNumber[]
+  productImage    ProductImage?
+
+  @@map("articles")
+}
+
+model ProductImage {
+  id              Int      @id @default(autoincrement())
+  originalUrl     String   // Original TecDoc image URL
+  localPath       String   // Local path to downloaded image
+  fileName        String   // Image filename
+  fileSize        Int?     // File size in bytes
+  mimeType        String?  // Image MIME type
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  // Relations
+  articleId       Int      @unique
+  article         Article  @relation(fields: [articleId], references: [id], onDelete: Cascade)
+
+  @@map("product_images")
+}
+
+model SupplierImage {
+  id              Int      @id @default(autoincrement())
+  supplierName    String   @unique // Supplier name for matching
+  fileName        String   // Image filename
+  localPath       String   // Local path to image
+  fileSize        Int?     // File size in bytes
+  mimeType        String?  // Image MIME type
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  @@map("supplier_images")
+}
+
+model OemNumber {
+  id        Int      @id @default(autoincrement())
+  oemBrand  String   // OEM brand (e.g., "VW", "BMW")
+  oemNumber String   // OEM part number
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // Relations
+  articleId Int
+  article   Article @relation(fields: [articleId], references: [id], onDelete: Cascade)
+
+  @@map("oem_numbers")
+}
+
+model NotFoundArticle {
+  id          Int      @id @default(autoincrement())
+  code        String   // Original code from your catalog
+  designation String?  // Original designation from your catalog
+  status      String   @default("Not found in TecDoc")
+  timestamp   DateTime @default(now())
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@map("not_found_articles")
+}
+
