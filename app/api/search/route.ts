@@ -34,7 +34,7 @@ export async function GET(request: NextRequest) {
           having: { inputCode: { _count: { equals: 1 } } }
         })
         baseWhere = {
-          inputCode: { in: singleInputCodes.map(item => item.inputCode) },
+          inputCode: { in: singleInputCodes.map((item: { inputCode: string; _count: { inputCode: number } }) => item.inputCode) },
           exists: null
         }
         break
@@ -114,7 +114,7 @@ export async function GET(request: NextRequest) {
     })
 
     // Group articles by inputCode for display
-    const groupedResults = articles.reduce((acc, article) => {
+    const groupedResults = articles.reduce((acc: Record<string, typeof articles>, article) => {
       const inputCode = article.inputCode
       if (!acc[inputCode]) {
         acc[inputCode] = []

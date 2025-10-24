@@ -33,7 +33,7 @@ export async function GET(request: NextRequest) {
     // Get inputCodes for current page
     const currentPageInputCodes = inputCodeCounts
       .slice(startIndex, endIndex)
-      .map(item => item.inputCode)
+      .map((item: { inputCode: string; _count: { inputCode: number } }) => item.inputCode)
 
     if (currentPageInputCodes.length === 0) {
       return NextResponse.json({ 
@@ -61,7 +61,7 @@ export async function GET(request: NextRequest) {
     })
 
     // Group articles by inputCode
-    const groupedArticles = articles.reduce((acc, article) => {
+    const groupedArticles = articles.reduce((acc: Record<string, typeof articles>, article) => {
       const inputCode = article.inputCode
       if (!acc[inputCode]) {
         acc[inputCode] = []
