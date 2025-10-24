@@ -106,7 +106,7 @@ export async function GET(request: NextRequest) {
     })
 
     // Group articles by inputCode
-    const groupedArticles = articles.reduce((acc: Record<string, typeof articles>, article) => {
+    const groupedArticles = articles.reduce((acc: Record<string, typeof articles>, article: typeof articles[0]) => {
       const inputCode = article.inputCode
       if (!acc[inputCode]) {
         acc[inputCode] = []
