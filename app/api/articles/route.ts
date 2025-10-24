@@ -78,7 +78,7 @@ export async function GET(request: NextRequest) {
     // Get inputCodes for current page
     const currentPageInputCodes = uniqueInputCodes
       .slice(startIndex, endIndex)
-      .map(item => item.inputCode)
+      .map((item: { inputCode: string }) => item.inputCode)
 
     if (currentPageInputCodes.length === 0) {
       return NextResponse.json({ 
