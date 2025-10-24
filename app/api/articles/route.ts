@@ -68,7 +68,7 @@ export async function GET(request: NextRequest) {
       orderBy: { inputCode: 'asc' }
     })
 
-    const uniqueInputCodes = inputCodeCounts.map(item => ({ inputCode: item.inputCode }))
+    const uniqueInputCodes = inputCodeCounts.map((item: { inputCode: string; _count: { inputCode: number } }) => ({ inputCode: item.inputCode }))
     const totalGroups = uniqueInputCodes.length
     const totalPages = Math.ceil(totalGroups / ITEMS_PER_PAGE)
     const currentPage = Math.min(Math.max(page, 1), totalPages)
