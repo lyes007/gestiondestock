@@ -70,7 +70,7 @@ export async function GET(request: NextRequest) {
       return acc
     }, {} as Record<string, typeof articles>)
 
-    const groups = currentPageInputCodes.map(inputCode => ({
+    const groups = currentPageInputCodes.map((inputCode: string) => ({
       inputCode,
       articles: groupedArticles[inputCode] || []
     }))
