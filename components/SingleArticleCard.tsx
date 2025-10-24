@@ -5,11 +5,11 @@ import { Article } from '@/lib/types'
 import Image from 'next/image'
 import { SupplierInfo } from './SupplierInfo'
 
-interface ArticleCardProps {
+interface SingleArticleCardProps {
   article: Article
 }
 
-export function ArticleCard({ article }: ArticleCardProps) {
+export function SingleArticleCard({ article }: SingleArticleCardProps) {
   const [isUpdating, setIsUpdating] = useState(false)
   const [currentExists, setCurrentExists] = useState(article.exists)
 
@@ -160,3 +160,4 @@ export function ArticleCard({ article }: ArticleCardProps) {
     </div>
   )
 }
+

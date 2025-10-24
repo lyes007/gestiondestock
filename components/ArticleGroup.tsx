@@ -43,7 +43,7 @@ export function ArticleGroup({ inputCode, articles }: ArticleGroupProps) {
 
   return (
     <div className="bg-white rounded-lg shadow-sm border">
-      <div className="p-6 border-b border-gray-200">
+      <div className="p-4 border-b border-gray-200">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-4">
             <div>
@@ -113,7 +113,7 @@ export function ArticleGroup({ inputCode, articles }: ArticleGroupProps) {
         </div>
       </div>
       
-      <div className="p-6 space-y-6">
+      <div className="p-4 space-y-4">
         {/* Supplier Showcase */}
         <SupplierShowcase 
           suppliers={articles.map(a => a.supplier.name)}
@@ -122,7 +122,7 @@ export function ArticleGroup({ inputCode, articles }: ArticleGroupProps) {
         />
         
         {/* Article Cards */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6 gap-3">
           {articles.map((article) => (
             <ArticleCard key={article.id} article={article} />
           ))}
