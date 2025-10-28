@@ -42,7 +42,7 @@ export function ArticleGroup({ inputCode, articles }: ArticleGroupProps) {
   }
 
   return (
-    <div className="bg-white rounded-lg shadow-sm border">
+    <div className="bg-white rounded-lg shadow-sm border max-w-full">
       <div className="p-4 border-b border-gray-200">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-4">
@@ -122,7 +122,7 @@ export function ArticleGroup({ inputCode, articles }: ArticleGroupProps) {
         />
         
         {/* Article Cards */}
-        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6 gap-3">
+        <div className="grid grid-cols-4 md:grid-cols-6 lg:grid-cols-8 xl:grid-cols-10 2xl:grid-cols-12 gap-2 overflow-x-auto">
           {articles.map((article) => (
             <ArticleCard key={article.id} article={article} />
           ))}

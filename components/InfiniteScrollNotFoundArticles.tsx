@@ -16,11 +16,13 @@ interface NotFoundArticle {
 interface InfiniteScrollNotFoundArticlesProps {
   initialArticles: NotFoundArticle[]
   totalArticles: number
+  searchQuery?: string
 }
 
 export function InfiniteScrollNotFoundArticles({ 
   initialArticles, 
-  totalArticles
+  totalArticles,
+  searchQuery
 }: InfiniteScrollNotFoundArticlesProps) {
   const [articles, setArticles] = useState(initialArticles)
   const [loading, setLoading] = useState(false)
@@ -33,7 +35,10 @@ export function InfiniteScrollNotFoundArticles({
     setLoading(true)
     try {
       const nextPage = currentPage + 1
-      const response = await fetch(`/api/not-found-articles?page=${nextPage}`)
+      const url = searchQuery 
+        ? `/api/not-found-articles?page=${nextPage}&q=${encodeURIComponent(searchQuery)}`
+        : `/api/not-found-articles?page=${nextPage}`
+      const response = await fetch(url)
       const data = await response.json()
       
       if (data.articles && data.articles.length > 0) {
@@ -48,7 +53,7 @@ export function InfiniteScrollNotFoundArticles({
     } finally {
       setLoading(false)
     }
-  }, [loading, hasMore, currentPage])
+  }, [loading, hasMore, currentPage, searchQuery])
 
   useEffect(() => {
     const handleScroll = () => {

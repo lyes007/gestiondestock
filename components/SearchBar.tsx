@@ -9,7 +9,7 @@ interface SearchBarProps {
   className?: string
 }
 
-export function SearchBar({ onSearch, placeholder = "Search articles...", className = "" }: SearchBarProps) {
+export function SearchBar({ onSearch, placeholder = "Search by article number, designation, or OEM number...", className = "" }: SearchBarProps) {
   const [query, setQuery] = useState('')
   const [filter, setFilter] = useState('all')
   const [isOpen, setIsOpen] = useState(false)
@@ -59,7 +59,7 @@ export function SearchBar({ onSearch, placeholder = "Search articles...", classN
             value={query}
             onChange={(e) => setQuery(e.target.value)}
             placeholder={placeholder}
-            className="block w-full pl-10 pr-10 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+            className="block w-full pl-10 pr-10 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 sm:text-sm bg-white text-gray-900 placeholder-gray-500"
           />
           {query && (
             <button
@@ -75,7 +75,7 @@ export function SearchBar({ onSearch, placeholder = "Search articles...", classN
         <div className="relative">
           <button
             onClick={() => setIsOpen(!isOpen)}
-            className="flex items-center space-x-2 px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-50 focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+            className="flex items-center space-x-2 px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-50 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-white text-gray-900"
           >
             <Filter className="h-4 w-4" />
             <span className="text-sm font-medium">
@@ -102,7 +102,7 @@ export function SearchBar({ onSearch, placeholder = "Search articles...", classN
                     className={`w-full text-left px-3 py-2 rounded-md text-sm transition-colors ${
                       filter === option.value
                         ? 'bg-blue-100 text-blue-800'
-                        : 'hover:bg-gray-100 text-gray-700'
+                        : 'hover:bg-gray-100 text-gray-900'
                     }`}
                   >
                     <div className="flex justify-between items-center">

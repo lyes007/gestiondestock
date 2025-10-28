@@ -1,5 +1,6 @@
 import { Suspense } from 'react'
 import { InfiniteScrollNotFoundArticles } from '@/components/InfiniteScrollNotFoundArticles'
+import { NotFoundArticlesContent } from '@/components/NotFoundArticlesContent'
 import { prisma } from '@/lib/prisma'
 
 export default async function NotFoundArticlesPage() {
@@ -13,23 +14,24 @@ export default async function NotFoundArticlesPage() {
   })
 
   return (
-    <div className="space-y-8">
-      <div>
-        <h2 className="text-3xl font-bold text-gray-900 mb-2">
-          Not Found Articles
-        </h2>
-        <p className="text-gray-600">
-          Articles that were not found in TecDoc API - {totalNotFound} total articles
-        </p>
+    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+      <div className="space-y-8">
+        <div>
+          <h2 className="text-3xl font-bold text-gray-900 mb-2">
+            Not Found Articles
+          </h2>
+          <p className="text-gray-600">
+            Articles that were not found in TecDoc API - {totalNotFound} total articles
+          </p>
+        </div>
+
+        <Suspense fallback={<NotFoundArticlesListSkeleton />}>
+          <NotFoundArticlesContent 
+            initialArticles={initialArticles}
+            totalArticles={totalNotFound}
+          />
+        </Suspense>
       </div>
-
-
-      <Suspense fallback={<NotFoundArticlesListSkeleton />}>
-        <InfiniteScrollNotFoundArticles 
-          initialArticles={initialArticles}
-          totalArticles={totalNotFound}
-        />
-      </Suspense>
     </div>
   )
 }

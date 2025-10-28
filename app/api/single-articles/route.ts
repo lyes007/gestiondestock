@@ -5,7 +5,27 @@ export async function GET(request: NextRequest) {
   try {
     const { searchParams } = new URL(request.url)
     const page = parseInt(searchParams.get('page') || '1', 10)
+    const query = searchParams.get('q') || ''
     const ITEMS_PER_PAGE = 12
+
+    // If there's a search query, use the search API instead
+    if (query.trim()) {
+      const searchResponse = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL || 'http://localhost:3000'}/api/search?q=${encodeURIComponent(query)}&filter=single&page=${page}&limit=${ITEMS_PER_PAGE}`)
+      const searchData = await searchResponse.json()
+      
+      // Transform search results to match single articles format
+      const groups = searchData.results?.map((result: any) => ({
+        inputCode: result.inputCode,
+        articles: result.articles || []
+      })) || []
+      
+      return NextResponse.json({
+        groups,
+        totalGroups: searchData.total || 0,
+        hasMore: searchData.hasMore || false,
+        currentPage: page
+      })
+    }
 
     // Get inputCodes that have exactly one article
     const inputCodeCounts = await prisma.article.groupBy({

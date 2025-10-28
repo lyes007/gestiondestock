@@ -10,11 +10,13 @@ interface InfiniteScrollSingleArticlesProps {
     articles: Article[]
   }>
   totalGroups: number
+  searchQuery?: string
 }
 
 export function InfiniteScrollSingleArticles({ 
   initialGroups, 
-  totalGroups
+  totalGroups,
+  searchQuery
 }: InfiniteScrollSingleArticlesProps) {
   const [groups, setGroups] = useState(initialGroups)
   const [loading, setLoading] = useState(false)
@@ -27,7 +29,10 @@ export function InfiniteScrollSingleArticles({
     setLoading(true)
     try {
       const nextPage = currentPage + 1
-      const response = await fetch(`/api/single-articles?page=${nextPage}`)
+      const url = searchQuery 
+        ? `/api/single-articles?page=${nextPage}&q=${encodeURIComponent(searchQuery)}`
+        : `/api/single-articles?page=${nextPage}`
+      const response = await fetch(url)
       const data = await response.json()
       
       if (data.groups && data.groups.length > 0) {
@@ -42,7 +47,7 @@ export function InfiniteScrollSingleArticles({
     } finally {
       setLoading(false)
     }
-  }, [loading, hasMore, currentPage])
+  }, [loading, hasMore, currentPage, searchQuery])
 
   useEffect(() => {
     const handleScroll = () => {

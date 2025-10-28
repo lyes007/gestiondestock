@@ -1,5 +1,6 @@
 import { Suspense } from 'react'
 import { InfiniteScrollSingleArticles } from '@/components/InfiniteScrollSingleArticles'
+import { SingleArticlesContent } from '@/components/SingleArticlesContent'
 import { prisma } from '@/lib/prisma'
 
 export default async function SingleArticlesPage() {
@@ -63,23 +64,24 @@ export default async function SingleArticlesPage() {
   }
 
   return (
-    <div className="space-y-8">
-      <div>
-        <h2 className="text-3xl font-bold text-gray-900 mb-2">
-          Single Articles
-        </h2>
-        <p className="text-gray-600">
-          Articles with only one variant per InputCode - no comparison needed
-        </p>
+    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+      <div className="space-y-8">
+        <div>
+          <h2 className="text-3xl font-bold text-gray-900 mb-2">
+            Single Articles
+          </h2>
+          <p className="text-gray-600">
+            Articles with only one variant per InputCode - no comparison needed
+          </p>
+        </div>
+
+        <Suspense fallback={<SingleArticlesListSkeleton />}>
+          <SingleArticlesContent 
+            initialGroups={initialGroups}
+            totalGroups={totalGroups}
+          />
+        </Suspense>
       </div>
-
-
-      <Suspense fallback={<SingleArticlesListSkeleton />}>
-        <InfiniteScrollSingleArticles 
-          initialGroups={initialGroups}
-          totalGroups={totalGroups}
-        />
-      </Suspense>
     </div>
   )
 }

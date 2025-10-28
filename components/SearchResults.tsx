@@ -88,17 +88,30 @@ export function SearchResults({ query, filter, onLoadMore, hasMore, isLoading }:
 
   if (loading && results.length === 0) {
     return (
-      <div className="space-y-6">
-        {[1, 2, 3].map((i) => (
-          <div key={i} className="bg-white rounded-lg shadow-sm border p-6 animate-pulse">
-            <div className="h-4 bg-gray-200 rounded w-3/4 mb-4"></div>
-            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6 gap-3">
-              {[1, 2, 3, 4].map((j) => (
-                <div key={j} className="bg-gray-200 rounded-lg h-48"></div>
-              ))}
-            </div>
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="space-y-6">
+          {/* Results Header Skeleton */}
+          <div className="animate-pulse">
+            <div className="h-6 bg-gray-200 rounded w-48 mb-2"></div>
+            <div className="h-4 bg-gray-200 rounded w-32"></div>
           </div>
-        ))}
+          
+          {/* Grid Skeleton */}
+          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6 2xl:grid-cols-8 gap-4">
+            {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12].map((i) => (
+              <div key={i} className="bg-white rounded-lg shadow-sm border p-2 animate-pulse">
+                <div className="aspect-square bg-gray-200 rounded-lg mb-2"></div>
+                <div className="h-3 bg-gray-200 rounded w-3/4 mb-1"></div>
+                <div className="h-3 bg-gray-200 rounded w-1/2 mb-1"></div>
+                <div className="h-3 bg-gray-200 rounded w-2/3 mb-2"></div>
+                <div className="flex space-x-1">
+                  <div className="h-6 bg-gray-200 rounded flex-1"></div>
+                  <div className="h-6 bg-gray-200 rounded flex-1"></div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
       </div>
     )
   }
@@ -118,21 +131,22 @@ export function SearchResults({ query, filter, onLoadMore, hasMore, isLoading }:
   }
 
   return (
-    <div className="space-y-6">
-      {/* Results Header */}
-      <div className="flex justify-between items-center">
-        <div>
-          <h3 className="text-lg font-semibold text-gray-900">
-            Search Results
-          </h3>
-          <p className="text-sm text-gray-600">
-            Found {total.toLocaleString()} result{total !== 1 ? 's' : ''} for "{query}"
-          </p>
-        </div>
-      </div>
-
-      {/* Results */}
+    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
       <div className="space-y-6">
+        {/* Results Header */}
+        <div className="flex justify-between items-center">
+          <div>
+            <h3 className="text-lg font-semibold text-gray-900">
+              Search Results
+            </h3>
+            <p className="text-sm text-gray-600">
+              Found {total.toLocaleString()} result{total !== 1 ? 's' : ''} for "{query}"
+            </p>
+          </div>
+        </div>
+
+        {/* Results */}
+        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6 2xl:grid-cols-8 gap-4">
         {results.map((result, index) => {
           // Handle not found articles
           if (filter === 'not-found' && result.code) {
@@ -152,44 +166,33 @@ export function SearchResults({ query, filter, onLoadMore, hasMore, isLoading }:
             )
           }
 
-          // Handle grouped articles
+          // Handle articles - show all individually
           if (result.inputCode && result.articles) {
-            // Check if it's a single article
-            if (result.articles.length === 1) {
-              return (
-                <SingleArticleCard
-                  key={`${result.inputCode}-${index}`}
-                  article={result.articles[0]}
-                />
-              )
-            }
-
-            // Multiple articles - show as group
-            return (
-              <ArticleGroup
-                key={`${result.inputCode}-${index}`}
-                inputCode={result.inputCode}
-                articles={result.articles}
+            return result.articles.map((article, articleIndex) => (
+              <SingleArticleCard
+                key={`${result.inputCode}-${article.id}-${articleIndex}`}
+                article={article}
               />
-            )
+            ))
           }
 
           return null
-        })}
-      </div>
-
-      {/* Load More Button */}
-      {hasMore && (
-        <div className="text-center">
-          <button
-            onClick={loadMore}
-            disabled={loading}
-            className="px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
-          >
-            {loading ? 'Loading...' : 'Load More Results'}
-          </button>
+        }).flat()}
         </div>
-      )}
+
+        {/* Load More Button */}
+        {hasMore && (
+          <div className="text-center">
+            <button
+              onClick={loadMore}
+              disabled={loading}
+              className="px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+            >
+              {loading ? 'Loading...' : 'Load More Results'}
+            </button>
+          </div>
+        )}
+      </div>
     </div>
   )
 }

@@ -84,14 +84,12 @@ export async function GET(request: NextRequest) {
         baseWhere = { exists: null }
     }
 
-    // Build search conditions
+    // Build search conditions - search article references, OEM numbers, and designations
     const searchConditions = {
       ...baseWhere,
       OR: [
-        { inputDesignation: { contains: query, mode: 'insensitive' } },
         { articleNo: { contains: query, mode: 'insensitive' } },
-        { productName: { contains: query, mode: 'insensitive' } },
-        { supplier: { name: { contains: query, mode: 'insensitive' } } },
+        { inputDesignation: { contains: query, mode: 'insensitive' } },
         { oemNumbers: { some: { oemNumber: { contains: query, mode: 'insensitive' } } } },
         { oemNumbers: { some: { oemBrand: { contains: query, mode: 'insensitive' } } } }
       ]

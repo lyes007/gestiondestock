@@ -47,15 +47,15 @@ export function SingleArticleCard({ article }: SingleArticleCardProps) {
   }
 
   return (
-    <div className="border border-gray-200 rounded-lg p-3 hover:shadow-md transition-shadow">
+    <div className="border border-gray-200 rounded-lg p-2 hover:shadow-md transition-shadow">
       {/* Product Image */}
-      <div className="aspect-square mb-3 bg-white rounded-lg overflow-hidden">
+      <div className="aspect-square mb-2 bg-white rounded-lg overflow-hidden">
         {article.productImage ? (
           <Image
             src={`/images/${article.productImage.fileName}`}
             alt={article.productName}
-            width={200}
-            height={200}
+            width={120}
+            height={120}
             className="w-full h-full object-contain"
             onError={(e) => {
               const target = e.target as HTMLImageElement
@@ -65,15 +65,15 @@ export function SingleArticleCard({ article }: SingleArticleCardProps) {
           />
         ) : null}
         <div className={`w-full h-full flex items-center justify-center text-gray-400 ${article.productImage ? 'hidden' : ''}`}>
-          <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
           </svg>
         </div>
       </div>
 
       {/* Article Info */}
-      <div className="space-y-1.5 mb-3">
-        <h4 className="font-semibold text-gray-900 line-clamp-2 text-sm">
+      <div className="space-y-1 mb-2">
+        <h4 className="font-semibold text-gray-900 line-clamp-2 text-xs">
           {article.productName}
         </h4>
         
@@ -87,7 +87,7 @@ export function SingleArticleCard({ article }: SingleArticleCardProps) {
         </div>
 
         {article.inputDesignation && (
-          <p className="text-xs text-gray-500 italic">
+          <p className="text-xs text-gray-500 italic line-clamp-1">
             {article.inputDesignation}
           </p>
         )}
@@ -96,12 +96,15 @@ export function SingleArticleCard({ article }: SingleArticleCardProps) {
         {article.oemNumbers.length > 0 && (
           <div className="text-xs">
             <p className="font-medium text-black mb-1">OEM:</p>
-            <div className="space-y-0.5">
-              {article.oemNumbers.map((oem) => (
-                <div key={oem.id} className="bg-gray-100 px-1.5 py-0.5 rounded text-xs border">
+            <div className="space-y-0.5 max-h-16 overflow-y-auto">
+              {article.oemNumbers.slice(0, 2).map((oem) => (
+                <div key={oem.id} className="bg-gray-100 px-1 py-0.5 rounded text-xs border">
                   <span className="font-medium text-gray-900">{oem.oemBrand}:</span> <span className="text-gray-800">{oem.oemNumber}</span>
                 </div>
               ))}
+              {article.oemNumbers.length > 2 && (
+                <div className="text-xs text-gray-500">+{article.oemNumbers.length - 2} more</div>
+              )}
             </div>
           </div>
         )}
@@ -112,7 +115,7 @@ export function SingleArticleCard({ article }: SingleArticleCardProps) {
         <button
           onClick={() => handleUpdate(true)}
           disabled={isUpdating || currentExists === true}
-          className={`flex-1 inline-flex items-center justify-center px-2 py-1.5 border border-transparent text-xs font-medium rounded-md text-white focus:outline-none focus:ring-1 focus:ring-offset-1 disabled:opacity-50 disabled:cursor-not-allowed ${
+          className={`flex-1 inline-flex items-center justify-center px-1.5 py-1 border border-transparent text-xs font-medium rounded-md text-white focus:outline-none focus:ring-1 focus:ring-offset-1 disabled:opacity-50 disabled:cursor-not-allowed ${
             currentExists === true
               ? 'bg-green-600 cursor-default'
               : 'bg-green-600 hover:bg-green-700 focus:ring-green-500'
@@ -136,7 +139,7 @@ export function SingleArticleCard({ article }: SingleArticleCardProps) {
         <button
           onClick={() => handleUpdate(false)}
           disabled={isUpdating || currentExists === false}
-          className={`flex-1 inline-flex items-center justify-center px-2 py-1.5 border border-transparent text-xs font-medium rounded-md text-white focus:outline-none focus:ring-1 focus:ring-offset-1 disabled:opacity-50 disabled:cursor-not-allowed ${
+          className={`flex-1 inline-flex items-center justify-center px-1.5 py-1 border border-transparent text-xs font-medium rounded-md text-white focus:outline-none focus:ring-1 focus:ring-offset-1 disabled:opacity-50 disabled:cursor-not-allowed ${
             currentExists === false
               ? 'bg-red-600 cursor-default'
               : 'bg-red-600 hover:bg-red-700 focus:ring-red-500'
